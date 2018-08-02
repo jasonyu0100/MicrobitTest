@@ -13,9 +13,6 @@ class TerminalControl:
         self.microbits = microbits
         self.calibrate()
 
-    def parseMicrobitData(self,microbitData):
-        pass
-
     def writeToConsole(self,string):
         '''
         Writes string to console
@@ -33,6 +30,13 @@ class TerminalControl:
 
     def getDistance(self,microbitData1,microbitData2):
         pass
+
+
+    def clappingFunction(self):
+        '''
+        Get histories of microbits and calcualte claps from there
+        '''
+
 
 class MicroBit:
     def __init__(self):
@@ -52,10 +56,12 @@ class MicroBit:
         self.z += z*time
 
     def setXYZ(self,x,y,z):
+        '''
+        Sets XYZ directly through values
+        '''
         self.x = x
         self.y = y
         self.z = z
-
 
         
 
