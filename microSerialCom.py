@@ -64,6 +64,8 @@ class MicroBit:
         self.y = y
         self.z = z
 
+    def 
+
         
 
 control = TerminalControl("COM5",[])
