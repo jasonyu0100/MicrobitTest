@@ -17,7 +17,8 @@ class TerminalControl:
         '''
         Writes string to console
         '''
-        self.serial.write(bytes(string))
+        byteString = string.encode()
+        self.serial.write(bytes(byteString))
 
     def calibrate(self):
         '''
@@ -66,6 +67,7 @@ class MicroBit:
         
 
 control = TerminalControl("COM5",[])
+control.serial.open()
 control.writeToConsole("Hello World")
 
     
