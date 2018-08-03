@@ -12,4 +12,3 @@ while True:
     rControl = eval(radio.receive())
     sensors = {"l":lControl,"r":rControl}
     uart.write(bytes(str(sensors)))
-    
