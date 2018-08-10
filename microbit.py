@@ -15,6 +15,13 @@ class MicroBit:
         self.y += y*time
         self.z += z*time
 
+    def update(self,data):
+        time = 50
+        acceleration = data['acceleration']
+        self.applyAcceleration(acceleration['X'],acceleration['Y'],acceleration['Z'],time)
+
+
+
     def setXYZ(self,x,y,z):
         '''
         Sets XYZ directly through values

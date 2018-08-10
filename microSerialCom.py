@@ -1,8 +1,9 @@
 import serial
+from .microbit import MicroBit
 
 class TerminalControl:
     baudRate = 115200
-    def __init__(self,port,microbits):
+    def __init__(self,port,leftMicroBit,rightMicroBit):
         '''
         Sets up serial communication
         '''
@@ -10,7 +11,8 @@ class TerminalControl:
         self.port = port
         self.serial.port = port
         self.serial.baudrate = TerminalControl.baudRate
-        self.microbits = microbits
+        self.leftMicroBit = leftMicroBit
+        self.rightMicroBit = rightMicroBit
         self.calibrate()
 
     def writeToConsole(self,string):
@@ -20,47 +22,21 @@ class TerminalControl:
         byteString = string.encode()
         self.serial.write(bytes(byteString))
 
-    def calibrate(self):
-        '''
-        Resets origin point of microbit
-        '''
-        x,y,z = 0,0,0
-        for microbit in self.microbits:
-            microbit.setXYZ(x,y,z)
-        pass
+    def parseData(self,str_data):
+        return eval(str_data)
+
+    def update(self,data):
+        left = data['l']
+        right = data['r']
+        self.leftMicroBit.update(left)
+        self.rightMicroBit.update(right)
 
 if __name__ == '__main__':
-    control = TerminalControl("COM5",[])
+    control = TerminalControl("COM5",MicroBit(),MicroBit())
     control.serial.open()
     control.writeToConsole("Hello World")
 
     while (True):
-    if (control.serial.inWaiting()>0): #if incoming bytes are waiting to be read from the serial input buffer
-        data_str = ser.read(ser.inWaiting()).decode('ascii') #read the bytes and convert from binary array to ASCII
-        print(data_str, end='') #print the incoming string without putting a new-line ('\n') automatically after every print()
-    #Put the rest of your code you want here
-
-'''
-class ReadLine:
-    def __init__(self, s):
-        self.buf = bytearray()
-        self.s = s
-    
-    def readline(self):
-        i = self.buf.find(b"\n")
-        if i >= 0:
-            r = self.buf[:i+1]
-            self.buf = self.buf[i+1:]
-            return r
-        while True:
-            i = max(1, min(2048, self.s.in_waiting))
-            data = self.s.read(i)
-            i = data.find(b"\n")
-            if i >= 0:
-                r = self.buf + data[:i+1]
-                self.buf[0:] = data[i+1:]
-                return r
-            else:
-                self.buf.extend(data)
-'''
-        
+        data_str = control.serial.readline().decode("utf-8")
+        parsed_data = control.parseData(data_str)
+        control.update(parsed_data)
