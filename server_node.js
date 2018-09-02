@@ -3,34 +3,38 @@ const url = require('url');
 
 const hostname = '127.0.0.1';
 const port = 3000;
-var grid = [];
+let grid = [];
 
 const server = http.createServer((req, res) => {
-	const { headers, method, url } = request;
+	const { headers, method, url } = req;
 	res.setHeader('Content-Type', 'text/plain');
     switch(url){
         case '/receive_data':
 			if (method != "POST") {
-				response.statusCode = 400;
+				res.statusCode = 400;
 				res.end("Invalid Request");
 				break;
 			}
-			response.statusCode = 200;
+			res.statusCode = 200;
 			let body = [];
-			request.on('data', (chunk) => {
+			req.on('data', (chunk) => {
 				body.push(chunk);
 			}).on('end', () => {
 				body = Buffer.concat(body).toString();
-				grid += body
+				body = JSON.parse(body);
+				let left = JSON.stringify(body["l"]);
+				let right = JSON.stringify(body["r"]);
+				grid.push(left,right);
 			});
-            res.end('Data Received');
+            res.end('Data Received'+body);
+			
         break;
 		case '/request_data':
-			response.statusCode = 200;
-			res.end(grid);	
+			res.statusCode = 200;
+			res.end(grid.toString());	
 		break;
         default:
-			response.statusCode = 400;
+			res.statusCode = 400;
             res.end('Invalid URL');
         break;
     }
