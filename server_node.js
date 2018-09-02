@@ -12,31 +12,30 @@ const server = http.createServer((req, res) => {
         case '/receive_data':
 			if (method != "POST") {
 				res.statusCode = 400;
-				res.end("Invalid Request");
-				break;
+				res.end("Invalid POST Request");
+			} else {
+				res.statusCode = 200;
+				let body = [];
+				req.on('data', (chunk) => {
+					body.push(chunk);
+				}).on('end', () => {
+					body = Buffer.concat(body).toString();
+					body = JSON.parse(body);
+					let left = JSON.stringify(body["l"]);
+					let right = JSON.stringify(body["r"]);
+					grid.push(left,right);
+				});
+				res.end('Data Received'+body);
 			}
-			res.statusCode = 200;
-			let body = [];
-			req.on('data', (chunk) => {
-				body.push(chunk);
-			}).on('end', () => {
-				body = Buffer.concat(body).toString();
-				body = JSON.parse(body);
-				let left = JSON.stringify(body["l"]);
-				let right = JSON.stringify(body["r"]);
-				grid.push(left,right);
-			});
-            res.end('Data Received'+body);
-			
-        break;
+        	break;
 		case '/request_data':
 			res.statusCode = 200;
 			res.end(grid.toString());	
-		break;
+			break;
         default:
 			res.statusCode = 400;
-            res.end('Invalid URL');
-        break;
+            res.end('Root Index');
+        	break;
     }
 });
 
