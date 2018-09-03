@@ -9,4 +9,4 @@ while True:
     "acceleration":{"x":accelerometer.get_x(),"y":accelerometer.get_y(),"z":accelerometer.get_z()}}
     sensors = {"l":lControl}
     uart.write(bytes(str(sensors)+"\n","utf-8"))
-    sleep(10000)
+    sleep(50)

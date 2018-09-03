@@ -11,14 +11,15 @@ It also sends its data to the activity monitor which sends its data to the serve
 '''
 
 class TerminalControl:
-    baudRate = 115200
-    sendRate = 50 #ms
+    BAUDRATE = 115200
+    SENDRATE = 50 #ms
+
     def __init__(self,port,leftMicroBit,rightMicroBit,serverURL):
         self.serial = serial.Serial()
         self.serverURL = serverURL
         self.port = port
         self.serial.port = port
-        self.serial.baudrate = TerminalControl.baudRate
+        self.serial.baudrate = TerminalControl.BAUDRATE
         self.leftMicroBit = leftMicroBit
         self.rightMicroBit = rightMicroBit
         self.activityControl = ActivityControl(self.serverURL)
@@ -33,12 +34,13 @@ class TerminalControl:
     def calibrate(self):
         self.leftMicroBit.setXYZ(0,0,0)
         self.rightMicroBit.setXYZ(0,0,0)
+        
 
     def update(self,data):
         left = data['l']
         right = data['r']
-        self.leftMicroBit.update(left,TerminalControl.sendRate)
-        self.rightMicroBit.update(right,TerminalControl.sendRate)
+        self.leftMicroBit.update(left,TerminalControl.SENDRATE)
+        self.rightMicroBit.update(right,TerminalControl.SENDRATE)
 
     def updateLoop(self):
         while (True):

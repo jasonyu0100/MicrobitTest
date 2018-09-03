@@ -1,4 +1,3 @@
-# Add your Python code here. E.g.
 from microbit import *
 import radio
 
@@ -11,4 +10,5 @@ while True:
     "pins":(pin0.is_touched(),pin1.is_touched(),pin2.is_touched()),
     "acceleration":{"x":accelerometer.get_x(),"y":accelerometer.get_y(),"z":accelerometer.get_z()}}
     radio.send(str(sensors))
+    sleep(50)
     

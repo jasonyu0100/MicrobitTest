@@ -8,6 +8,7 @@ ie clapping monitor would count the amount of claps made within a period of time
 The activity control would send data to the server to be used 
 '''
 
+
 class ActivityControl:
     def __init__(self,serverURL):
         self.serverURL = serverURL
@@ -35,6 +36,11 @@ class RunningMonitor:
         self.stepCount = 0
         self.currentStepProgress = 0
         pass
+
+    def updateStepProgress(self):
+    	self.
+
+    
 
     # def checkStep(self,rightMicroBit,leftMicroBit):
     	# rightMicroBit.acce
