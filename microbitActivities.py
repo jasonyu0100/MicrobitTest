@@ -31,27 +31,30 @@ class ActivityControl:
             self.sendPOST(postData)
   
 class RunningMonitor:
-	STEP_LENGTH = 75 #cm
     def __init__(self):
         self.stepCount = 0
-        self.currentStepProgress = 0
         pass
-
-    def updateStepProgress(self):
-    	self.
-
-    
-
-    # def checkStep(self,rightMicroBit,leftMicroBit):
-    	# rightMicroBit.acce
-        
 
 class PunchingMonitor:
-    def __init__(self):
+    def __init__(self,rightMicroBit,leftMicroBit):
         self.punchCount = 0
+        self.prev_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
+        self.prev_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.prev_z_l = leftMicrobit.z
+        self.prev_z_r = rightMicrobit.z
 
-    def checkPunch(self):
-        pass
+    def checkPunch(self,rightMicroBit,leftMicroBit):
+        THRESH = 0.5
+        self.curr_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
+        self.curr_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        if self.curr_acc_l < -1*THRESH and self.prev_acc_l > THRESH and self.prev_z_l - leftMicrobit.z > THRESH:
+            self.punchCount += 1
+        if self.curr_acc_r < -1*THRESH and self.prev_acc_r > THRESH and self.prev_z_r - rightMicrobit.z > THRESH:
+            self.punchCount += 1
+        self.prev_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
+        self.prev_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.prev_z_l = leftMicrobit.z
+        self.prev_z_r = rightMicrobit.z
 
 class ClappingMonitor:
     THRESHOLD = 10
