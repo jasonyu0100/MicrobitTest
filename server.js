@@ -5,6 +5,7 @@ const hostname = '127.0.0.1';
 const port = 3000;
 let grid = [];
 
+
 const server = http.createServer((req, res) => {
 	const { headers, method, url } = req;
 	res.setHeader('Content-Type', 'text/plain');
@@ -29,7 +30,7 @@ const server = http.createServer((req, res) => {
 			}
         	break;
 		case '/request_data':
-			res.statusCode = 200;
+			res.writeHead(200, {"Access-Control-Allow-Origin":'*'})
 			res.end(grid.toString());	
 			break;
         default:

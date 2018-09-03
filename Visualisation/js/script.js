@@ -22,8 +22,15 @@ var animate = function () {
 };
 animate();
 
+function updateLoop () {
+   setTimeout(function () {
+      $.get( "http://127.0.0.1:3000/request_data", function( data ) {
+        console.log( "Data Loaded: " + data );
+      });
+      updateLoop();
+   }, 100)
+}
 
-$.get( "test.php", function( data ) {
-  alert( "Data Loaded: " + data );
-});
+updateLoop();
+
 

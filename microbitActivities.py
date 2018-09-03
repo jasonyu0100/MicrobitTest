@@ -30,12 +30,15 @@ class ActivityControl:
             self.sendPOST(postData)
   
 class RunningMonitor:
+	STEP_LENGTH = 75 #cm
     def __init__(self):
         self.stepCount = 0
+        self.currentStepProgress = 0
         pass
 
-    def checkStep(self):
-        pass
+    # def checkStep(self,rightMicroBit,leftMicroBit):
+    	# rightMicroBit.acce
+        
 
 class PunchingMonitor:
     def __init__(self):
