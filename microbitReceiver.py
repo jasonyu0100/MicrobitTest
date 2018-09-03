@@ -1,4 +1,3 @@
-# Add your Python code here. E.g.
 from microbit import *
 
 uart.init(baudrate=115200, bits=8, parity=None, stop=1)

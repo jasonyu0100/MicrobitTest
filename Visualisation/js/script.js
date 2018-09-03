@@ -21,3 +21,9 @@ var animate = function () {
   renderer.render( scene, camera );
 };
 animate();
+
+
+$.get( "test.php", function( data ) {
+  alert( "Data Loaded: " + data );
+});
+

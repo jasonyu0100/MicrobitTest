@@ -1,8 +1,14 @@
 import serial
 from microbit import MicroBit
-import urllib.request, urllib.parse
-import json, time
-import subprocess
+from microbitActivities import ActivityControl
+import urllib.request,urllib.parse
+import json
+import time
+
+'''
+Terminal control receives data from the microbit and sends it to the server 
+It also sends its data to the activity monitor which sends its data to the server
+'''
 
 class TerminalControl:
     baudRate = 115200
@@ -15,6 +21,7 @@ class TerminalControl:
         self.serial.baudrate = TerminalControl.baudRate
         self.leftMicroBit = leftMicroBit
         self.rightMicroBit = rightMicroBit
+        self.activityControl = ActivityControl(self.serverURL)
 
     def writeToConsole(self,string):
         byteString = string.encode()
@@ -58,22 +65,9 @@ class TerminalControl:
     def sendDummyData(self):
         self.sendPOST({'r':'R Dummy','l':'L Dummy'})
 
-    def startServer(self):
-        checkStartServer = input("Do you want to start server? (Y/N): ")
-        while checkStartServer not in ['Y','N']:
-            if checkStartServer == 'Y':
-                subprocess.call('sudo node server_node.js',shell=True)
-            elif checkStartServer == 'N':
-                break
-            else:
-                checkStartServer = input("Do you want to start server? (Y/N): ")
-
-
-
 if __name__ == '__main__':
     terminalControl = TerminalControl("COM5",MicroBit(),MicroBit(),"http://127.0.0.1:3000/")
-    terminalControl.startServer()
-    terminalControl.serial.open()
-    terminalControl.writeToConsole("Hello World")
-    self.sendDummyData(self)
+    # terminalControl.serial.open()
+    terminalControl.sendDummyData()
+    # terminalControl.writeToConsole("Hello World")
     # terminalControl.updateLoop()
