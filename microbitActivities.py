@@ -1,4 +1,4 @@
-import math
+import math, json
 from microbit import MicroBit
 import urllib.request,urllib.parse
 
@@ -25,6 +25,9 @@ class ActivityControl:
     def postLoop(self):
         while (True):
             postData = {'CLAP':0,'RUN':0,'PUNCHING':0}
+            self.clappingMonitor.checkClap()
+            self.runningMonitor.checkStep()
+            self.punchingMonitor.checkPunch()
             postData['CLAP'] = self.clappingMonitor.clapCount
             postData['RUN'] = self.runningMonitor.stepCount
             postData['PUNCHING'] = self.punchingMonitor.punchCount
@@ -34,25 +37,31 @@ class RunningMonitor:
     def __init__(self):
         self.stepCount = 0
         pass
+    
+    def checkStep():
+        pass
 
 class PunchingMonitor:
     def __init__(self,rightMicroBit,leftMicroBit):
         self.punchCount = 0
-        self.prev_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
-        self.prev_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.prev_acc_r = rightMicrobit.acc["x"] + rightMicrobit.acc["y"]
+        self.prev_acc_l = leftMicrobit.acc["x"] + leftMicrobit.acc["y"]
         self.prev_z_l = leftMicrobit.z
         self.prev_z_r = rightMicrobit.z
+        self.curr_acc_r = 0
+        self.curr_acc_l = 0
+        
 
     def checkPunch(self,rightMicroBit,leftMicroBit):
         THRESH = 0.5
-        self.curr_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
-        self.curr_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.curr_acc_r = rightMicrobit.acc["x"] + rightMicrobit.acc["y"]
+        self.curr_acc_l = leftMicrobit.acc["x"] + leftMicrobit.acc["y"]
         if self.curr_acc_l < -1*THRESH and self.prev_acc_l > THRESH and self.prev_z_l - leftMicrobit.z > THRESH:
             self.punchCount += 1
         if self.curr_acc_r < -1*THRESH and self.prev_acc_r > THRESH and self.prev_z_r - rightMicrobit.z > THRESH:
             self.punchCount += 1
-        self.prev_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
-        self.prev_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.prev_acc_r = rightMicrobit.acc["x"] + rightMicrobit.acc["y"]
+        self.prev_acc_l = leftMicrobit.acc["x"] + leftMicrobit.acc["y"]
         self.prev_z_l = leftMicrobit.z
         self.prev_z_r = rightMicrobit.z
 
