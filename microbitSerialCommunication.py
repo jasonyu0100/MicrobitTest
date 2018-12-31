@@ -68,8 +68,10 @@ class TerminalControl:
         self.sendPOST({'r':'R Dummy','l':'L Dummy'})
 
 if __name__ == '__main__':
-    terminalControl = TerminalControl("COM5",MicroBit(),MicroBit(),"http://127.0.0.1:3000/")
-    # terminalControl.serial.open()
+    terminalControl = TerminalControl("COM5",MicroBit(TerminalControl.SENDRATE),MicroBit(TerminalControl.SENDRATE),"http://127.0.0.1:3000/")
     terminalControl.sendDummyData()
-    # terminalControl.writeToConsole("Hello World")
+
+    # send actual data
+    # terminalControl.serial.open()
+    # terminalControl.writeToConsole("Sending actual data")
     # terminalControl.updateLoop()

@@ -36,23 +36,25 @@ class RunningMonitor:
         pass
 
 class PunchingMonitor:
+    THRESHOLD = 0.5
     def __init__(self,rightMicroBit,leftMicroBit):
         self.punchCount = 0
-        self.prev_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
-        self.prev_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.prev_acc_r = rightMicrobit.acc["x"] + rightMicrobit.acc["y"]
+        self.prev_acc_l = leftMicrobit.acc["x"] + leftMicrobit.acc["y"]
         self.prev_z_l = leftMicrobit.z
         self.prev_z_r = rightMicrobit.z
+        self.curr_acc_r = 0 
+        self.curr_acc_l = 0
 
     def checkPunch(self,rightMicroBit,leftMicroBit):
-        THRESH = 0.5
-        self.curr_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
-        self.curr_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
-        if self.curr_acc_l < -1*THRESH and self.prev_acc_l > THRESH and self.prev_z_l - leftMicrobit.z > THRESH:
+        self.curr_acc_r = rightMicrobit.acc["x"] + rightMicrobit.acc["y"]
+        self.curr_acc_l = leftMicrobit.acc["x"] + leftMicrobit.acc["y"]
+        if self.curr_acc_l < -1*PunchingMonitor.THRESHOLD and self.prev_acc_l > PunchingMonitor.THRESHOLD and self.prev_z_l - leftMicrobit.z > PunchingMonitor.THRESHOLD:
             self.punchCount += 1
-        if self.curr_acc_r < -1*THRESH and self.prev_acc_r > THRESH and self.prev_z_r - rightMicrobit.z > THRESH:
+        if self.curr_acc_r < -1*PunchingMonitor.THRESHOLD and self.prev_acc_r > PunchingMonitor.THRESHOLD and self.prev_z_r - rightMicrobit.z > PunchingMonitor.THRESHOLD:
             self.punchCount += 1
-        self.prev_acc_r = rightMicrobit.accel["x"] + rightMicrobit.accel["y"]
-        self.prev_acc_l = leftMicrobit.accel["x"] + leftMicrobit.accel["y"]
+        self.prev_acc_r = rightMicrobit.acc["x"] + rightMicrobit.acc["y"]
+        self.prev_acc_l = leftMicrobit.acc["x"] + leftMicrobit.acc["y"]
         self.prev_z_l = leftMicrobit.z
         self.prev_z_r = rightMicrobit.z
 
@@ -63,9 +65,9 @@ class ClappingMonitor:
         self.clapCount = 0
     
     def checkClap(self,rightMicroBit,leftMicroBit):
-        xDist = abs(rightMicroBit.x - leftMicroBit.x)
-        yDist = abs(rightMicroBit.y - leftMicroBit.y)
-        zDist = abs(rightMicroBit.z - leftMicroBit.z)
+        xDist = abs(rightMicroBit.pos['X'] - leftMicroBit.pos['X'])
+        yDist = abs(rightMicroBit.pos['Y'] - leftMicroBit.pos['Y'])
+        zDist = abs(rightMicroBit.pos['Z'] - leftMicroBit.pos['Z'])
         totalDistance = math.sqrt(xDist ** 2 + yDist ** 2 + zDist ** 2)
         if totalDistance <= self.THRESHOLD and self.clapped==False:
             self.clapped=True
