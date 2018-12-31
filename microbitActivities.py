@@ -1,4 +1,4 @@
-import math
+import math, json
 from microbit import MicroBit
 import urllib.request,urllib.parse
 
@@ -25,6 +25,9 @@ class ActivityControl:
     def postLoop(self):
         while (True):
             postData = {'CLAP':0,'RUN':0,'PUNCHING':0}
+            self.clappingMonitor.checkClap()
+            self.runningMonitor.checkStep()
+            self.punchingMonitor.checkPunch()
             postData['CLAP'] = self.clappingMonitor.clapCount
             postData['RUN'] = self.runningMonitor.stepCount
             postData['PUNCHING'] = self.punchingMonitor.punchCount
@@ -33,6 +36,9 @@ class ActivityControl:
 class RunningMonitor:
     def __init__(self):
         self.stepCount = 0
+        pass
+    
+    def checkStep():
         pass
 
 class PunchingMonitor:
